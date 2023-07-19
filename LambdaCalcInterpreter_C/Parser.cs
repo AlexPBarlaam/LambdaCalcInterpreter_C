@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace LambdaCalcInterpreter
+namespace LambdaCalcInterpreter_C
 {
     internal static class Parser
     {
@@ -16,17 +16,40 @@ namespace LambdaCalcInterpreter
         #endregion
 
         #region Parser
-        internal static MatchCollection[] Parse(string str) // put all regex matchcollections in an array for the interpreter?
+        internal static Dictionary<string, string[]> Parse(string str)
         {
-            //searches for regex matches
-            MatchCollection funcMatches = application.Matches(str);
-            MatchCollection appMatches = function.Matches(str);
-            MatchCollection boundVarMatches = boundVar.Matches(str);
-            MatchCollection varMatches = var.Matches(str);
+            //searches for regex matches and converts them to string[]
+            var funcMatches = function.Matches(str)
+                .OfType<Match>()
+                .Select(m => m.Groups[0].Value)
+                .ToArray();
 
-            MatchCollection[] matches = { funcMatches, appMatches, boundVarMatches, varMatches };
+            var appMatches = application.Matches(str)
+                .OfType<Match>()
+                .Select(m => m.Groups[0].Value)
+                .ToArray();
+
+            var boundVarMatches = boundVar.Matches(str)
+                .OfType<Match>()
+                .Select(m => m.Groups[0].Value)
+                .ToArray();
+
+            var varMatches = var.Matches(str)
+                .OfType<Match>()
+                .Select(m => m.Groups[0].Value)
+                .ToArray();
+
+
+            //compiles all matches in a dictionary and returns
+            var matches = new Dictionary<string, string[]>()
+            {
+                { "functions", funcMatches },
+                { "applications", appMatches},
+                { "boundVars", boundVarMatches},
+                { "vars", varMatches}
+            };
             return matches;
         }
         #endregion
-    }
+    }    
 }

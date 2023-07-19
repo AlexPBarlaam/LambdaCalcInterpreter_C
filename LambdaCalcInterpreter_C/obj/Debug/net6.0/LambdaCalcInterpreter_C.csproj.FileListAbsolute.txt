@@ -1,0 +1,15 @@
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\bin\Debug\net6.0\LambdaCalcInterpreter_C.exe
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\bin\Debug\net6.0\LambdaCalcInterpreter_C.deps.json
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\bin\Debug\net6.0\LambdaCalcInterpreter_C.runtimeconfig.json
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\bin\Debug\net6.0\LambdaCalcInterpreter_C.dll
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\bin\Debug\net6.0\LambdaCalcInterpreter_C.pdb
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\obj\Debug\net6.0\LambdaCalcInterpreter_C.csproj.AssemblyReference.cache
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\obj\Debug\net6.0\LambdaCalcInterpreter_C.GeneratedMSBuildEditorConfig.editorconfig
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\obj\Debug\net6.0\LambdaCalcInterpreter_C.AssemblyInfoInputs.cache
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\obj\Debug\net6.0\LambdaCalcInterpreter_C.AssemblyInfo.cs
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\obj\Debug\net6.0\LambdaCalcInterpreter_C.csproj.CoreCompileInputs.cache
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\obj\Debug\net6.0\LambdaCalcInterpreter_C.dll
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\obj\Debug\net6.0\refint\LambdaCalcInterpreter_C.dll
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\obj\Debug\net6.0\LambdaCalcInterpreter_C.pdb
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\obj\Debug\net6.0\LambdaCalcInterpreter_C.genruntimeconfig.cache
+G:\University Of Lincoln\3rd Year\Logic and Computation\Lambda Interpreters\Lamda_Calc_Interpreter_C#\LambdaCalcInterpreter_C\LambdaCalcInterpreter_C\obj\Debug\net6.0\ref\LambdaCalcInterpreter_C.dll
