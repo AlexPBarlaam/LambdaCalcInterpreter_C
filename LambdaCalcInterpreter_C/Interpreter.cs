@@ -1,51 +1,53 @@
-﻿namespace LambdaCalcInterpreter_C
+﻿using static LambdaCalcInterpreter_C.Program;
+using static LambdaCalcInterpreter_C.Parser;
+
+namespace LambdaCalcInterpreter_C
 {
     
     internal static class Interpreter
     {
         #region SyntacticSugar
-        internal static Dictionary<string, string[]> Desugar(Dictionary<string, string[]> matches)
+        internal static string Desugar(string expression)
         {
-            //LAMBDA xyz.xyz --> LAMBDA x.(LAMBDA y.(LAMBDA z.xyz))
+            //i.e. LAMBDA xyz.xyz --> LAMBDA x.(LAMBDA y.(LAMBDA z.xyz))
 
             bool SyntacticSugar = false;
-
-            //Checks if the expressions has syntactic sugar
-            if (matches["vars"][0].Length > 1) //This IF statement needs to be edited to go through every var, not just the first one
+            string[] vars = getVarsArray(expression);
+            foreach (string var in vars)
             {
-                SyntacticSugar = true;
-            }
+                //Checks if the expressions has syntactic sugar
+                if (var.Length > 1)
+                {
+                    SyntacticSugar = true;
+                    break;
 
+                }
+            }
+            
             if (SyntacticSugar == true)
             {
-                Dictionary<string, string[]> newMatches = matches;
-
-                Console.WriteLine("before:");
-                Program.tokenPrint(newMatches);
+                string newFunc = "";
 
                 //Loops through the vars from the parser to desugar them 
-                for (int i = 0; i < matches["vars"].Length; i++)
+                for (int i = 0; i < vars.Length; i++)
                 {
 
+                    //Compares the current and previous var to avoid desugaring the same thing twice
                     if (i >= 1)
                     {
-                        if (string.Equals(matches["vars"][i], matches["vars"][i - 1]))
+                        if (string.Equals(vars[i], vars[i - 1]))
                         {
                             continue;
                         }
                     }
 
-                    if (matches["vars"][i].Length > 1)
+                    //Checks the lenght of the vars to see if they need desugaring
+                    if (vars[i].Length > 1)
                     {
-                        Console.WriteLine("inside loop");
-                        Console.WriteLine(matches["vars"][i]);
-                        Program.tokenPrint(matches["functions"]);
-                        Console.WriteLine("=============================================");
-
-                        char[] singleVars = matches["vars"][i].ToCharArray();
-                        string newFunc = null;
+                        char[] singleVars = vars[i].ToCharArray(); //splits the sugared vars into individual vars
                         int bracketCount = 0;
 
+                        //desugars the vars into the currents equivalent expression
                         foreach (char var in singleVars)
                         {
                             string varStr = var.ToString();
@@ -60,35 +62,35 @@
                             bracketCount++;
                         }
 
-                        string endBrackets = null;
+                        string? endBrackets = null;
 
+                        //adds the correct number of brackets at the end of the desuraged expression
                         for (int j = 0; j < bracketCount; j++)
                         {
                             endBrackets += ")";
                         }
 
-                        newFunc += matches["vars"][i] + endBrackets;
-                        Console.WriteLine(newFunc);
+                        newFunc += vars[i] + endBrackets;
+                        
+                        Console.WriteLine("New Expression:" + newFunc);
                     }
                 }
-
-                Console.WriteLine("after:");
-                Program.tokenPrint(newMatches);
-
-                return newMatches;
+               
+                return newFunc;
             }
+            
             else
             {
-                return matches;
+                return expression;
             }        
         }
         #endregion
         
         #region Interpreter
-        internal static void AlphaConversion()
+        internal static void AlphaConversion(string[] vars)
         {
-            /*
-            MatchCollection newVars;
+            
+            string[] newVars;
 
             bool Duplicates = false;
             foreach (string var in vars)
@@ -96,14 +98,11 @@
                 if (var == "x") { }
             }
 
-
             if (Duplicates == true)
             {
-
-
-                return newVars;
+                return;
             }
-            else { return; }*/
+            else { return; }
         }
 
         internal static void BetaReduction()
@@ -113,11 +112,27 @@
 
         #endregion
 
-        #region Search Algorithm
-        internal static void getDuplicateVars(string[] vars) 
+        #region Search Algorithms
+        internal static void findDuplicateVars(string[] array) 
         {
-            Program.tokenPrint(vars);            
+            tokenPrint(array);            
         }
-        #endregion
+        
+        internal static int findIndex(string[] array, string item) 
+        {
+            int index = 0;
+
+            for(int i = 0; i < array.Length; i++) 
+            {
+                if (string.Equals(array[i],item) == true)
+                {
+                    index = i;
+                    Console.WriteLine("Index Found");
+                    break;
+                }            
+            }
+            return index;
+        }        
+        #endregion        
     }
 }

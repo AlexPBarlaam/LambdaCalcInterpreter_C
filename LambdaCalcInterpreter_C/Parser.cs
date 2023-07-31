@@ -4,11 +4,7 @@ namespace LambdaCalcInterpreter_C
 {
     internal static class Parser
     {
-        #region RegexPatterns
-        /*regex patterns to generate tokens
-            Function Syntax: "LAMBDA x.x"
-            Application Syntax "(LAMBDA x.x)y"
-        */
+        #region RegexPatterns        
         private static Regex function = new Regex(@"LAMBDA [a-z]+\.[a-z]+");
         private static Regex application = new Regex(@"\(LAMBDA [a-z]+\.[a-z]+\)[a-z]+");
         private static Regex boundVar = new Regex(@"LAMBDA [a-z]+\.");
@@ -16,6 +12,8 @@ namespace LambdaCalcInterpreter_C
         #endregion
 
         #region Parser
+        
+        //Main Parser
         internal static Dictionary<string, string[]> Parse(string str)
         {
             //searches for regex matches and converts them to string[]
@@ -48,6 +46,16 @@ namespace LambdaCalcInterpreter_C
                 { "boundVars", boundVarMatches},
                 { "vars", varMatches}
             };
+            return matches;
+        }
+        
+        //Secondary Parser used when desugaring expression
+        internal static string[] getVarsArray(string str) 
+        { 
+            var matches = var.Matches(str)
+                .OfType<Match>()
+                .Select(m => m.Groups[0].Value)
+                .ToArray();
             return matches;
         }
         #endregion

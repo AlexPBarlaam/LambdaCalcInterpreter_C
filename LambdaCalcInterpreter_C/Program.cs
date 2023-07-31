@@ -9,13 +9,12 @@ namespace LambdaCalcInterpreter_C
         {
             //test strings to be parsed, eventually will parse a string through command line
             string test = "(LAMBDA xyz.xyz)";
-            string desugaredTest = "LAMBDA x.(LAMBDA y.(LAMBDA z.xyz))";
 
-            Dictionary<string, string[]> testTokens = Parse(test);
-            Dictionary<string, string[]> desugaredTestTokens = Parse(desugaredTest);
-            //tokenPrint(testTokens);
-            //tokenPrint(desugaredTestTokens);
-            Dictionary<string, string[]> desugaredTokens = Desugar(testTokens);
+            string desugared = Desugar(test);
+
+            Dictionary<string, string[]> testTokens = Parse(desugared);
+            tokenPrint(testTokens);
+            
         }
 
         #region MatchCollection Printing
@@ -44,9 +43,9 @@ namespace LambdaCalcInterpreter_C
     /*TO DO:
      * DONE - Pattern for individual variables so they can be interpreted and expressions can be de-suagred if needed
      * DONE - Maybe have a dictionary instead of an array for ease of recognition in the parser
+     * DONE - Write Desugarer
      * 
-     * IN PROGRESS - Write Desugarer
-     * 
+     * Modify Desugared to desugar before parsing
      * Finish Writing alphaConvertion
      * Write betaReduction
     */
