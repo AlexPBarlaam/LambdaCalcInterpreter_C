@@ -1,17 +1,17 @@
 ﻿using System.Text.RegularExpressions;
 
 namespace LambdaCalcInterpreter_C
-{
+{        
     internal static class Parser
     {
         #region RegexPatterns        
-        private static Regex function = new Regex(@"LAMBDA [a-z]+\.[a-z]+");
-        private static Regex application = new Regex(@"\(LAMBDA [a-z]+\.[a-z]+\)[a-z]+");
-        private static Regex boundVar = new Regex(@"LAMBDA [a-z]+\.");
-        private static Regex var = new Regex(@"[a-z]+");
+        private static readonly Regex function = new Regex(@"L [a-z]+\.[a-z]+");
+        private static readonly Regex application = new Regex(@"\(L [a-z]+\.[a-z]+\)[a-z]+");
+        private static readonly Regex inputVar = new Regex(@"L [a-z]+\.");
+        private static readonly Regex var = new Regex(@"[a-z]+");
         #endregion
 
-        #region Parser
+        #region ParserRegex
         
         //Main Parser
         internal static Dictionary<string, string[]> Parse(string str)
@@ -27,7 +27,7 @@ namespace LambdaCalcInterpreter_C
                 .Select(m => m.Groups[0].Value)
                 .ToArray();
 
-            var boundVarMatches = boundVar.Matches(str)
+            var boundVarMatches = inputVar.Matches(str)
                 .OfType<Match>()
                 .Select(m => m.Groups[0].Value)
                 .ToArray();
@@ -43,13 +43,14 @@ namespace LambdaCalcInterpreter_C
             {
                 { "functions", funcMatches },
                 { "applications", appMatches},
-                { "boundVars", boundVarMatches},
+                { "inputVar", boundVarMatches},
                 { "vars", varMatches}
             };
             return matches;
         }
         
         //Secondary Parser used when desugaring expression
+        //Parses just the expression's variable
         internal static string[] getVarsArray(string str) 
         { 
             var matches = var.Matches(str)
@@ -59,5 +60,62 @@ namespace LambdaCalcInterpreter_C
             return matches;
         }
         #endregion
-    }    
+
+
+
+        #region ParserTokens
+
+        internal static readonly Regex singleVar = new Regex(@"[a-z]");
+
+        internal static List<KeyValuePair<string, char>> AltParse(string expression)
+        {
+
+            /*
+            *   L is the function keyword
+            *   ( and ) are expression delimiters
+            *   . is the return operator
+            *   [a-z] are identifiers used as arguments and returns and variables 
+            */
+
+
+            var tokens = new List<KeyValuePair<string, char>>();
+            foreach(char c in expression)
+            {
+                Console.WriteLine(c);
+                
+                switch (c)
+                {
+                    case 'L':
+                        tokens.Add(new KeyValuePair<string, char>("keyword", c));
+                        break;
+                    case '(':
+                        tokens.Add(new KeyValuePair<string, char>("separator", c));
+                        break;
+                    case ')':
+                        tokens.Add(new KeyValuePair<string, char>("separator", c));
+                        break;
+                    case '.':
+                        tokens.Add(new KeyValuePair<string, char>("operator", c));
+                        break;
+                    default:
+                        Match var = singleVar.Match(c.ToString());
+                        if (var.Success)
+                        {
+                            Console.WriteLine("var found:{0}", var.Value);
+                            tokens.Add(new KeyValuePair<string, char>("identifier", c));
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Exception Thrown");
+                            // Add a throw statemment here
+                            break;
+                        }                        
+                }                
+            }
+            return tokens;
+        }
+          
+        #endregion
+    }
 }

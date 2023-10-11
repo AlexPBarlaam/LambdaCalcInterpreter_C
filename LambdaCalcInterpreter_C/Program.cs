@@ -8,32 +8,47 @@ namespace LambdaCalcInterpreter_C
         static void Main(string[] args)
         {
             //test strings to be parsed, eventually will parse a string through command line
-            string test = "(LAMBDA xyz.xyz)";
-
-            string desugared = Desugar(test);
-
-            Dictionary<string, string[]> testTokens = Parse(desugared);
-            tokenPrint(testTokens);
+            string identityApplication = "((Lx.x)y)";
+            //string test = "((L x.(L y.(L z.xyz)))abc)";
             
-        }
+            /*
+            Dictionary<string, string[]> matches = Parse(identityApplication);
+            BetaReduction(identityApplication, matches);*/
 
-        #region MatchCollection Printing
-        //Used to print all matches from a MatchCollection array for testing
-        public static void tokenPrint(string[] tokens)
-        {
-            foreach (string match in tokens)
+            List<KeyValuePair<string,char>> tokens = AltParse(identityApplication);
+            foreach(KeyValuePair<string,char> token in tokens)
             {
-                Console.WriteLine(match.ToString());
+                Console.WriteLine("Key: {0}, Value: {1}",token.Key,token.Value);
             }
         }
-        
-        public static void tokenPrint(Dictionary<string, string[]> tokens)
+
+        static string SyntacticCheck(string expression) 
+        { 
+            Console.WriteLine(expression);
+            string[] vars = getVarsArray(expression);
+            string? desugared = null;
+            
+            foreach (string var in vars) 
+            { 
+                if(var.Length > 1) 
+                { 
+                    desugared = Desugar(expression);
+                    break;
+                }
+            }
+            return desugared;
+        }
+
+        #region DictionaryPrinting        
+        public static void dictPrint(Dictionary<string, string[]> tokens)
         {
             foreach(KeyValuePair<string, string[]> pair in tokens)
             {
-                foreach(string match in pair.Value)
+                Console.WriteLine("Key: {0}", pair.Key);
+                
+                foreach(string value in pair.Value) 
                 {
-                    Console.WriteLine(match);
+                    Console.WriteLine("Value: {0}", value); 
                 }
             }
         }
@@ -44,9 +59,16 @@ namespace LambdaCalcInterpreter_C
      * DONE - Pattern for individual variables so they can be interpreted and expressions can be de-suagred if needed
      * DONE - Maybe have a dictionary instead of an array for ease of recognition in the parser
      * DONE - Write Desugarer
+     * DONE - Modify Desugared to desugar before parsing
      * 
-     * Modify Desugared to desugar before parsing
+     * STARTED - Complete AltParser. May work better than the current parser. See Lexical Analysis for a model.
+     * STARTED - Write Synthatic Check to only modify certain region if the expression for long expressions - this is what synctatic check is for
      * Finish Writing alphaConvertion
-     * Write betaReduction
+     * STARTED - Write betaReduction
+    */
+
+    /*KNOWN BUGS:
+     * Curried functions, ie ((L x.(L y.(L z.xyz)))x) won't get entirely parsed. The parser will only recognise L z.xyz as a function
+     * ^ Might be fixed with the new parser.
     */
 }
