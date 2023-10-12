@@ -8,14 +8,14 @@ namespace LambdaCalcInterpreter_C
         static void Main(string[] args)
         {
             //test strings to be parsed, eventually will parse a string through command line
-            string identityApplication = "((Lx.x)y)";
-            //string test = "((L x.(L y.(L z.xyz)))abc)";
+            string identityApplication = "((Lx .x)y)";
+            string test = "((Lx.(Ly.(Lz.xyz)))abc)";
             
             /*
             Dictionary<string, string[]> matches = Parse(identityApplication);
             BetaReduction(identityApplication, matches);*/
 
-            List<KeyValuePair<string,char>> tokens = AltParse(identityApplication);
+            List<KeyValuePair<string,char>> tokens = AltParse(test);
             foreach(KeyValuePair<string,char> token in tokens)
             {
                 Console.WriteLine("Key: {0}, Value: {1}",token.Key,token.Value);
@@ -56,12 +56,8 @@ namespace LambdaCalcInterpreter_C
     }
 
     /*TO DO:
-     * DONE - Pattern for individual variables so they can be interpreted and expressions can be de-suagred if needed
-     * DONE - Maybe have a dictionary instead of an array for ease of recognition in the parser
-     * DONE - Write Desugarer
-     * DONE - Modify Desugared to desugar before parsing
+     * DONE - Complete AltParser. May work better than the current parser. See Lexical Analysis for a model.
      * 
-     * STARTED - Complete AltParser. May work better than the current parser. See Lexical Analysis for a model.
      * STARTED - Write Synthatic Check to only modify certain region if the expression for long expressions - this is what synctatic check is for
      * Finish Writing alphaConvertion
      * STARTED - Write betaReduction
@@ -69,6 +65,6 @@ namespace LambdaCalcInterpreter_C
 
     /*KNOWN BUGS:
      * Curried functions, ie ((L x.(L y.(L z.xyz)))x) won't get entirely parsed. The parser will only recognise L z.xyz as a function
-     * ^ Might be fixed with the new parser.
+     * ^ Might be fixed with the new parser. EDIT: Is Fixed with new token parser
     */
 }

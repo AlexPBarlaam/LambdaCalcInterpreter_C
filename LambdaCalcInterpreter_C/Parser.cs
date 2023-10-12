@@ -79,10 +79,9 @@ namespace LambdaCalcInterpreter_C
 
 
             var tokens = new List<KeyValuePair<string, char>>();
+            int charIndex = 0;
             foreach(char c in expression)
             {
-                Console.WriteLine(c);
-                
                 switch (c)
                 {
                     case 'L':
@@ -101,17 +100,17 @@ namespace LambdaCalcInterpreter_C
                         Match var = singleVar.Match(c.ToString());
                         if (var.Success)
                         {
-                            Console.WriteLine("var found:{0}", var.Value);
                             tokens.Add(new KeyValuePair<string, char>("identifier", c));
                             break;
                         }
                         else
                         {
-                            Console.WriteLine("Exception Thrown");
-                            // Add a throw statemment here
+                            Console.Error.WriteLine("Parser Error: Unexpected Character at Character {0}", charIndex.ToString());
+                            Environment.Exit(1);
                             break;
                         }                        
                 }                
+                charIndex++;
             }
             return tokens;
         }
