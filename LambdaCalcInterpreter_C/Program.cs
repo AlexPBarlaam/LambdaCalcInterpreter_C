@@ -1,5 +1,6 @@
 ﻿using static LambdaCalcInterpreter_C.Parser;
 using static LambdaCalcInterpreter_C.Interpreter;
+using System.Text.RegularExpressions;
 
 namespace LambdaCalcInterpreter_C
 { 
@@ -8,63 +9,60 @@ namespace LambdaCalcInterpreter_C
         static void Main(string[] args)
         {
             //test strings to be parsed, eventually will parse a string through command line
-            string identityApplication = "((Lx .x)y)";
-            string test = "((Lx.(Ly.(Lz.xyz)))abc)";
             
-            /*
-            Dictionary<string, string[]> matches = Parse(identityApplication);
-            BetaReduction(identityApplication, matches);*/
+            //string identityApplication = "((Lx .x)y)";
+            //string CurriedExp = "((Lx.(Ly.(Lz.xyz)))abc)";
+            string SugaredExp = "((Lxyz.xyz)abc)";
 
-            List<KeyValuePair<string,char>> tokens = AltParse(test);
+            string DesugaredExp = SyntacticCheck(SugaredExp);
+
+            Console.WriteLine(DesugaredExp);
+
+            List<KeyValuePair<string,char>> tokens = Parse(DesugaredExp);
+            
             foreach(KeyValuePair<string,char> token in tokens)
             {
                 Console.WriteLine("Key: {0}, Value: {1}",token.Key,token.Value);
             }
+            Console.WriteLine("====================================================");
+            BetaReduction(tokens);
         }
-
-        static string SyntacticCheck(string expression) 
-        { 
+        static string SyntacticCheck(string expression)
+        {
+            Regex singleExp = new(@"\(L[a-z]+\.[a-z]+\)");
+            
             Console.WriteLine(expression);
-            string[] vars = getVarsArray(expression);
             string? desugared = null;
             
-            foreach (string var in vars) 
-            { 
-                if(var.Length > 1) 
-                { 
-                    desugared = Desugar(expression);
-                    break;
-                }
-            }
-            return desugared;
-        }
+            //var matches = singleExp.Matches(expression).OfType<Match>().Select(m => m.Groups[0].Value).ToArray(); 
+            string match = singleExp.Match(expression).ToString();
 
-        #region DictionaryPrinting        
-        public static void dictPrint(Dictionary<string, string[]> tokens)
-        {
-            foreach(KeyValuePair<string, string[]> pair in tokens)
-            {
-                Console.WriteLine("Key: {0}", pair.Key);
-                
-                foreach(string value in pair.Value) 
-                {
-                    Console.WriteLine("Value: {0}", value); 
-                }
-            }
+            string newExp = Desugar(match);
+
+            desugared = expression.Replace(match , newExp);
+
+            return desugared ?? expression; //return desugared, if it is empty return expression instead
         }
-        #endregion
     }
 
     /*TO DO:
      * DONE - Complete AltParser. May work better than the current parser. See Lexical Analysis for a model.
+     * DONE - Write Synthatic Check to only modify certain region if the expression for long expressions - this is what synctatic check is for
      * 
-     * STARTED - Write Synthatic Check to only modify certain region if the expression for long expressions - this is what synctatic check is for
      * Finish Writing alphaConvertion
-     * STARTED - Write betaReduction
+     * Write betaReduction
     */
 
     /*KNOWN BUGS:
-     * Curried functions, ie ((L x.(L y.(L z.xyz)))x) won't get entirely parsed. The parser will only recognise L z.xyz as a function
-     * ^ Might be fixed with the new parser. EDIT: Is Fixed with new token parser
+     * FIXED - Curried functions, ie ((L x.(L y.(L z.xyz)))x) won't get entirely parsed. The parser will only recognise L z.xyz as a function
+     * FIXED - Desugaring algorithm will desugar anything with multiples vars including unbound variables used in applications
     */
+
+    /*NOTES 
+     * Algorithms Flow should be:
+     *      Desugar - Parse - Resolve(with A Convertion & B Reduction)
+     *      
+     * Syntactic check does work however bugs may occur when an expression has multiple region to desugar
+     */
+
 }

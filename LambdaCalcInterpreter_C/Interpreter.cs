@@ -1,4 +1,4 @@
-﻿using static LambdaCalcInterpreter_C.Program;
+﻿using System.Collections;
 using static LambdaCalcInterpreter_C.Parser;
 
 namespace LambdaCalcInterpreter_C
@@ -12,7 +12,7 @@ namespace LambdaCalcInterpreter_C
             //i.e. LAMBDA xyz.xyz --> LAMBDA x.(LAMBDA y.(LAMBDA z.xyz))
 
             bool SyntacticSugar = false;
-            string[] vars = getVarsArray(expression);
+            string[] vars = GetVarsArray(expression);
             foreach (string var in vars)
             {
                 //Checks if the expression has syntactic sugar
@@ -40,7 +40,7 @@ namespace LambdaCalcInterpreter_C
                         }
                     }
 
-                    //Checks the lenght of the vars to see if they need desugaring
+                    //Checks the length of the vars to see if they need desugaring
                     if (vars[i].Length > 1)
                     {
                         char[] singleVars = vars[i].ToCharArray(); //splits the sugared vars into individual vars
@@ -52,11 +52,11 @@ namespace LambdaCalcInterpreter_C
                             string varStr = var.ToString();
                             if (string.IsNullOrEmpty(varStr))
                             {
-                                newFunc += "L " + varStr + ".";
+                                newFunc += "L" + varStr + ".";
                             }
                             else
                             {
-                                newFunc += "(L " + varStr + ".";
+                                newFunc += "(L" + varStr + ".";
                             }
                             bracketCount++;
                         }
@@ -86,41 +86,44 @@ namespace LambdaCalcInterpreter_C
         #endregion
 
         #region Interpreter
-        internal static void AlphaConversion(string[] vars)
+        internal static void AlphaConversion()
         {
 
-            string[] newVars;
-
-            bool Duplicates = false;
-            foreach (string var in vars)
-            {
-                if (var == "x") { }
-            }
-
-            if (Duplicates == true)
-            {
-                return;
-            }
-            else { return; }
+          
         }
 
-        internal static void BetaReduction(string exp, Dictionary<string, string[]> parseMatches)
+        internal static void BetaReduction(List<KeyValuePair<string, char>> Tokens)
         {
-            bool isBound = false;
-            dictPrint(parseMatches);
-            //Checks for bound variables in the input variables
-            foreach (string input in parseMatches["inputVar"])
+            bool IsBound = false;
+            Dictionary<int,char> vars = BuildHash(Tokens);
+            
+            foreach(KeyValuePair<int,char> var in vars)
             {
-                //string[] retVars = findReturnVars();
-
-
+                Console.WriteLine("{0}:{1}",var.Key,var.Value);
+                //Console.WriteLine(var.Value.GetHashCode);
             }
+
+            /* 
+             *
+             */
+
+        }
+        
+        
+        internal static Dictionary<int, char> BuildHash(List<KeyValuePair<string,char>> Tokens)
+        {
+            Dictionary<int, char> hash = new Dictionary<int, char>();
+            int i  = 0;
+            foreach(KeyValuePair<string, char> kvp in Tokens)
+            {
+                if (kvp.Key == "identifier")
+                {
+                    hash.Add(i,kvp.Value);
+                }
+                i++;
+            }            
+            return hash;
         }
         #endregion
-        /*private static string[] findReturnVars(string inputVar, string exp) 
-        {            
-            //Helper function to find vars that are identical to our input var
-            return ;
-        }*/
     }
 }
